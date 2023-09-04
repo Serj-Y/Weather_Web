@@ -21,30 +21,32 @@ const formatCurrentWeather = (data: any) => {
         forecast: { forecastday }
     } = data
     const { maxtemp_c, mintemp_c } = forecastday[0].day
+    const { sunrise, sunset } = forecastday[0].astro
 
-    return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id }
+    return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id, sunrise, sunset }
 }
 const formatForecastWeather = (data: any) => {
-    let { timeZone, forecast } = data;
+    let { tz_id, forecast } = data;
+
     forecast = forecast.forecastday.slice(1, 6).map((d: any) => {
         return {
-            title: formatToLocalTime(d.date_epoch, timeZone, "ccc"),
+            title: formatToLocalTime(d.date_epoch, tz_id, "ccc"),
             temp: d.day.avgtemp_c,
             icon: d.day.condition.icon,
-            hour: d.hour.slice(0,5)
+            hour: d.hour.slice(0, 5),
         }
     })
-    return { timeZone, forecast }
+    return { tz_id, forecast }
 }
 
 const getFormattedWeatherData = async (searchParams: any) => {
     const formattedForecastWeather = await getWeatherData("forecast.json", searchParams).then(formatForecastWeather);
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather);
 
-    return {...formattedCurrentWeather, ...formattedForecastWeather}
+    return { ...formattedCurrentWeather, ...formattedForecastWeather }
 }
 
-const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| Local time: 'hh:mm") =>
+const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| Local time: 'HH:MM") =>
     DateTime.fromSeconds(secs).setZone(zone).toFormat(format)
 
 
@@ -52,4 +54,4 @@ const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| 
 
 export default getFormattedWeatherData
 
-export{formatToLocalTime}
+export { formatToLocalTime }

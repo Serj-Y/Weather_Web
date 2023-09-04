@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TopButtons from './components/TopButtons';
 import Inputs from './components/Inputs';
 import TimeAndLocation from './components/TimeAndLocation';
@@ -10,25 +10,32 @@ import getFormattedWeatherData from "./api/weatherApi";
 
 function App() {
 
-  const fetchWeather = async () => {
-const data = await getFormattedWeatherData( {q: "Kiev", days: 7})
-console.log(data)
+  const [query, setQuery] = useState({ q: "Kiev", days: 6 })
+  const [weather, setWeather] = useState(null)
 
 
-  }
-  fetchWeather()
-
-
+  useEffect(() => {
+    const fetchWeather = async () => {
+      await getFormattedWeatherData({ ...query }).then(
+        (data) => {
+          //@ts-ignore
+          setWeather(data);
+        })
+    }
+    fetchWeather()
+  }, [query])
+  console.log(weather)
 
   return (
-    <div className=" mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-br from-cyan-500 to-blue-500 h-fit shadow-xl shadow-gray-400">
+    <div className=" mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-b from-cyan-500 to-blue-500 h-fit shadow-xl shadow-gray-400">
       <TopButtons />
       <Inputs />
-
-      <TimeAndLocation />
-      <TemperatureAndDetails />
-      <Forecast title="Hourly" />
-      <Forecast title="Daily" />
+      {weather ? <div>
+        <TimeAndLocation  weather={weather} />
+        <TemperatureAndDetails weather={weather} />
+        <Forecast title="Hourly" />
+        <Forecast title="Daily" />
+      </div> : <></>}
     </div>
   );
 }
