@@ -11,7 +11,7 @@ import getFormattedWeatherData from "./api/weatherApi";
 function App() {
 
   const fetchWeather = async () => {
-const data = await getFormattedWeatherData( {q: "Kiev", days: 1})
+const data = await getFormattedWeatherData( {q: "Kiev", days: 7})
 console.log(data)
 
 
