@@ -1,10 +1,15 @@
 import React from 'react'
+import { convertFrom12To24Format } from "./convertFrom12To24Format"
+import { formatToLocalTime } from "../api/weatherApi"
 
 type PropsType = {
-title: string
+    title: string
+    items: any
+
 }
 
-export default function Forecast({title}: PropsType) {
+export default function Forecast({ title, items}: PropsType) {
+    // console.log(items)
     return (
         <div>
             <div className="flex items-center justify-start mt-6" >
@@ -14,41 +19,17 @@ export default function Forecast({title}: PropsType) {
             </div>
             <hr className="my-2" />
             <div className="flex flex-grow items-center justify-between text-white" >
-                <div className="flex flex-col items-center justify-center" >
-                    <p className="font-light text-sm">
-                        04:30
-                    </p>
-                    <img className="w-12 my-2" src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="forecastImg" />
-                    <p className="font-medium" >18°</p>
-                </div>
-                <div className="flex flex-col items-center justify-center" >
-                    <p className="font-light text-sm">
-                        05:30
-                    </p>
-                    <img className="w-12 my-2" src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="forecastImg" />
-                    <p className="font-medium" >17°</p>
-                </div>
-                <div className="flex flex-col items-center justify-center" >
-                    <p className="font-light text-sm">
-                        06:30
-                    </p>
-                    <img className="w-12 my-2" src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="forecastImg" />
-                    <p className="font-medium" >16°</p>
-                </div>
-                <div className="flex flex-col items-center justify-center" >
-                    <p className="font-light text-sm">
-                        07:30
-                    </p>
-                    <img className="w-12 my-2" src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="forecastImg" />
-                    <p className="font-medium" >16°</p>
-                </div>
-                <div className="flex flex-col items-center justify-center" >
-                    <p className="font-light text-sm">
-                        08:30
-                    </p>
-                    <img className="w-12 my-2" src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="forecastImg" />
-                    <p className="font-medium" >17°</p>
-                </div>
+                {items.map((item: any) =>
+                    <div  className="flex flex-col items-center justify-center" >
+                        <p className="font-light text-sm">
+                            {item.title|| item.map((i: any) => i.time)}
+                        </p>
+                        <img className="w-12 my-2" src={item.icon||item[0].condition.icon} alt="forecastImg" />
+                        <p className="font-medium" >{item.temp|| item.map((i: any)=>i.temp_c )}°</p>
+                    </div>
+
+                )}
+                
             </div>
         </div>
     )

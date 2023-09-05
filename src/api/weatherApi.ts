@@ -18,35 +18,37 @@ const formatCurrentWeather = (data: any) => {
     const {
         location: { lat, lon, name, country, tz_id, localtime_epoch },
         current: { temp_c, wind_kph, humidity, feelslike_c, condition: { text, icon } },
-        forecast: { forecastday }
+        forecast: { forecastday, }
     } = data
     const { maxtemp_c, mintemp_c } = forecastday[0].day
     const { sunrise, sunset } = forecastday[0].astro
+    const { hour } = forecastday.map((i: any) => i.day.hour)
 
-    return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id, sunrise, sunset }
+
+    return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id, sunrise, sunset, hour }
 }
 const formatForecastWeather = (data: any) => {
-    let { tz_id, forecast } = data;
-
-    forecast = forecast.forecastday.slice(1, 6).map((d: any) => {
+    let { tz_id, forecast, hour } = data;
+    forecast = forecast.forecastday.slice(0, 5).map((d: any) => {
         return {
             title: formatToLocalTime(d.date_epoch, tz_id, "ccc"),
             temp: d.day.avgtemp_c,
             icon: d.day.condition.icon,
-            hour: d.hour.slice(0, 5),
+            hour: d.hour
         }
     })
-    return { tz_id, forecast }
+
+    return { tz_id, forecast, hour }
 }
 
 const getFormattedWeatherData = async (searchParams: any) => {
     const formattedForecastWeather = await getWeatherData("forecast.json", searchParams).then(formatForecastWeather);
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather);
 
-    return { ...formattedCurrentWeather, ...formattedForecastWeather }
+    return { ...formattedCurrentWeather, ...formattedForecastWeather, }
 }
 
-const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| Local time: 'HH:MM") =>
+const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| Local time: 'HH:mm") =>
     DateTime.fromSeconds(secs).setZone(zone).toFormat(format)
 
 

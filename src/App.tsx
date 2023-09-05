@@ -11,8 +11,13 @@ import getFormattedWeatherData from "./api/weatherApi";
 function App() {
 
   const [query, setQuery] = useState({ q: "Kiev", days: 6 })
-  const [weather, setWeather] = useState(null)
+  const [weather, setWeather] = useState(null) as any
 
+  // const hourItems = weather?.forecast.map((i: any) => i.hour.filter((f:any)=> f.time_epoch >= weather.localtime_epoch ) ).slice(0,1)
+
+
+
+  // console.log(hourItems)
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -24,6 +29,7 @@ function App() {
     }
     fetchWeather()
   }, [query])
+ 
   console.log(weather)
 
   return (
@@ -33,8 +39,9 @@ function App() {
       {weather ? <div>
         <TimeAndLocation  weather={weather} />
         <TemperatureAndDetails weather={weather} />
-        <Forecast title="Hourly" />
-        <Forecast title="Daily" />
+        {/* <Forecast items={[...hourItems]}  title="Hourly" /> */}
+        {/* <Forecast items={weather.forecast[0].hour}  title="Hourly" /> */}
+        <Forecast items={weather.forecast} title="Daily" />
       </div> : <></>}
     </div>
   );
