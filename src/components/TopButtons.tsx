@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default function TopButtons() {
+export default function TopButtons({setQuery}:any) {
 
   const cites = [
     {
       id: 1,
-      title: "Kyiv"
+      title: "Kiev"
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ export default function TopButtons() {
   return (
     <div className="flex justify-between items-center my-6">
       {cites.map((city) => (
-        <button key={city.id} className="text-white text-lg font-medium">{city.title}</button>
+        <button key={city.id} className="text-white text-lg font-medium"  onClick={()=> setQuery({q: city.title})} >{city.title}</button>
       ))}
     </div>
   )

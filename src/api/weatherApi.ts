@@ -9,7 +9,7 @@ const BASE_URL = "http://api.weatherapi.com/v1/"
 const getWeatherData = (infoType: any, searchParams: any) => {
     const url = new URL(BASE_URL + infoType);
     // @ts-ignore
-    url.search = new URLSearchParams({ ...searchParams, key: API_KEY })
+    url.search = new URLSearchParams({ ...searchParams, days: 6, key: API_KEY })
 
     return fetch(url).then((response) => response.json())
 }

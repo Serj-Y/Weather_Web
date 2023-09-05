@@ -10,13 +10,10 @@ import getFormattedWeatherData from "./api/weatherApi";
 
 function App() {
 
-  const [query, setQuery] = useState({ q: "Kiev", days: 6 })
+  const [query, setQuery] = useState({ q: "Kiev"})
   const [weather, setWeather] = useState(null) as any
 
   // const hourItems = weather?.forecast.map((i: any) => i.hour.filter((f:any)=> f.time_epoch >= weather.localtime_epoch ) ).slice(0,1)
-
-
-
   // console.log(hourItems)
 
   useEffect(() => {
@@ -34,7 +31,7 @@ function App() {
 
   return (
     <div className=" mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-b from-cyan-500 to-blue-500 h-fit shadow-xl shadow-gray-400">
-      <TopButtons />
+      <TopButtons setQuery={setQuery} />
       <Inputs />
       {weather ? <div>
         <TimeAndLocation  weather={weather} />
