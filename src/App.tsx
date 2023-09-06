@@ -10,31 +10,36 @@ import getFormattedWeatherData from "./api/weatherApi";
 
 function App() {
 
-  const [query, setQuery] = useState({ q: "Kiev"})
-  const [weather, setWeather] = useState(null) as any
-
+  const [query, setQuery] = useState("Kiev")
+  
+  const [lastData, setLastData] = useState(null) as any
+const [weather, setWeather] = useState(null) as any
   // const hourItems = weather?.forecast.map((i: any) => i.hour.filter((f:any)=> f.time_epoch >= weather.localtime_epoch ) ).slice(0,1)
   // console.log(hourItems)
 
   useEffect(() => {
     const fetchWeather = async () => {
-      await getFormattedWeatherData({ ...query }).then(
+      await getFormattedWeatherData(query).then(
         (data) => {
           //@ts-ignore
-          setWeather(data);
+
+     setWeather(data)
+
         })
+        
     }
+
     fetchWeather()
   }, [query])
- 
-  console.log(weather)
+
+
 
   return (
     <div className=" mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-b from-cyan-500 to-blue-500 h-fit shadow-xl shadow-gray-400">
       <TopButtons setQuery={setQuery} />
-      <Inputs />
-      {weather ? <div>
-        <TimeAndLocation  weather={weather} />
+      <Inputs setQuery={setQuery} />
+      {weather? <div>
+        <TimeAndLocation weather={weather} />
         <TemperatureAndDetails weather={weather} />
         {/* <Forecast items={[...hourItems]}  title="Hourly" /> */}
         {/* <Forecast items={weather.forecast[0].hour}  title="Hourly" /> */}
