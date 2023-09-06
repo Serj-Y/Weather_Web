@@ -12,7 +12,7 @@ const getWeatherData = (infoType: any, searchParams: any) => {
 
     const url = new URL(BASE_URL + infoType);
     //@ts-ignore
-    url.search = new URLSearchParams({ q: searchParams, days: 6, key: API_KEY })
+    url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY })
     return fetch(url).then((response) => response.json()).catch((error) => alert(error))
 
 }
@@ -39,7 +39,7 @@ const formatForecastWeather = (data: any) => {
 
     if(data.forecast) {
      let { tz_id, forecast, hour } = data;
-    forecast = forecast.forecastday.slice(0, 5).map((d: any) => {
+    forecast = forecast.forecastday.map((d: any) => {
         return {
             title: formatToLocalTime(d.date_epoch, tz_id, "ccc"),
             temp: d.day.maxtemp_c,
