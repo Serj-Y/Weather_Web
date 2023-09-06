@@ -24,9 +24,8 @@ const formatCurrentWeather = (data: any) => {
         } = data
         const { maxtemp_c, mintemp_c } = forecastday[0].day
         const { sunrise, sunset } = forecastday[0].astro
-        const { hour } = forecastday.map((i: any) => i.day.hour)
 
-        return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id, sunrise, sunset, hour }
+        return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id, sunrise, sunset, }
     }
 
 }
@@ -34,7 +33,6 @@ const formatForecastWeather = (data: any) => {
     if (data.forecast) {
         let { tz_id, forecast, hour } = data;
         forecast = forecast.forecastday.map((d: any) => {
-
             return {
                 title: formatToLocalTime(d.date_epoch, tz_id, "ccc"),
                 temp: d.day.maxtemp_c,
@@ -46,12 +44,31 @@ const formatForecastWeather = (data: any) => {
         return { tz_id, forecast, hour }
     }
 }
+const formatHourWeather = (data: any) => {
+    if (data.forecast) {
+        let { tz_id, forecast, hoursFromTwoDays, location } = data
+        hoursFromTwoDays = forecast?.forecastday.slice(0, 2).map((d: any) => d.hour);
+        const twoDaysHours = hoursFromTwoDays[0].concat(hoursFromTwoDays[1]);
+        const filtredTwoDaysHours = twoDaysHours.filter((f: any) => f.time_epoch >= location.localtime_epoch)
+        const hourForecast = filtredTwoDaysHours.map((h: any) => {
+            return {
+                title: formatToLocalTime(h.time_epoch, tz_id, "HH:mm"),
+                temp: h.temp_c,
+                icon: h.condition.icon,
+            }
+        })
+        const fiveHourForecast = hourForecast.slice(0, 5)
+
+        return { fiveHourForecast }
+    }
+}
 
 const getFormattedWeatherData = async (searchParams: any) => {
     const formattedForecastWeather = await getWeatherData("forecast.json", searchParams).then(formatForecastWeather);
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather)
+    const formattedHourWeather = await getWeatherData("forecast.json", searchParams).then(formatHourWeather)
 
-    return { ...formattedCurrentWeather, ...formattedForecastWeather, }
+    return { ...formattedCurrentWeather, ...formattedForecastWeather, ...formattedHourWeather }
 }
 
 const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| Local time: 'HH:mm") =>
