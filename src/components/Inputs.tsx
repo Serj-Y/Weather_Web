@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { GoSearch, GoLocation } from "react-icons/go"
 
 
-export default function Inputs({ setQuery }: any) {
+export default function Inputs({ setQuery, setFahrenheit }: any) {
 
     const [city, setCity] = useState("")
 
@@ -21,7 +21,6 @@ export default function Inputs({ setQuery }: any) {
             })
         }
     }
-
     return (
         <div className="flex flex-row justify-center my-6" >
             <div className="flex fle-row w-3/4 items-center justify-center space-x-4">
@@ -41,9 +40,9 @@ export default function Inputs({ setQuery }: any) {
                 />
             </div>
             <div className="flex flex-row w-1/4 items-center justify-center" >
-                <button name="metric" className="text-xl text-white font-light" >°C</button>
+                <button onClick={() => setFahrenheit(false)} className="text-xl text-white font-light" >°C</button>
                 <p className="text-xl text-white mx-1" >|</p>
-                <button name="imperial" className="text-xl text-white font-light">°F</button>
+                <button onClick={() => setFahrenheit(true)} name="imperial" className="text-xl text-white font-light">°F</button>
             </div>
         </div>
     )

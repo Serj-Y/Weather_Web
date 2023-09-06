@@ -1,18 +1,17 @@
 import React from 'react'
-import { convertFrom12To24Format } from "./convertFrom12To24Format"
-import { formatToLocalTime } from "../api/weatherApi"
+import { celsiusToFahrenheit } from "./celsiusToFahrenheit"
+
 
 type PropsType = {
     title: string
     items: any
-
+    isFahrenheit: boolean
 }
 
-export default function Forecast({ title, items }: PropsType) {
-    console.log(items)
+export default function Forecast({ title, items, isFahrenheit }: PropsType) {
     return (
         <div>
-            {items ? <>
+            {items? <>
                 <div className="flex items-center justify-start mt-6" >
                     <p className="text-white font-medium uppercase" >
                         {title} Forecast
@@ -26,7 +25,7 @@ export default function Forecast({ title, items }: PropsType) {
                                 {item.title || item.time.slice(10)}
                             </p>
                             <img className="w-12 my-2" src={item.icon || item.condition.icon} alt="forecastImg" />
-                            <p className="font-medium" >{item.temp || item.temp_c}°</p>
+                            <p className="font-medium" >{celsiusToFahrenheit(item.temp, isFahrenheit) || celsiusToFahrenheit(item?.temp_c, isFahrenheit)}°</p>
                         </div>
                     )}
                 </div>
