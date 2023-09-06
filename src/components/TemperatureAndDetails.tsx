@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react"
 import { BsArrowUp, BsArrowDown, BsWind, BsSunset, BsSunrise, } from "react-icons/bs"
 import { FaTemperatureHalf } from "react-icons/fa6"
 import { WiHumidity } from "react-icons/wi"
-import { convertFrom12To24Format } from "./convertFrom12To24Format"
-import { celsiusToFahrenheit } from "./celsiusToFahrenheit"
+import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
+import { convertFrom12To24Format } from "./common/convertFrom12To24Format"
+
 
 type PropsType = {
   weather: {
@@ -73,7 +74,6 @@ export default function TemperatureAndDetails({ weather: {
         <p className="font-light" >
           Set: <span className="font-medium ml-1 " > {convertFrom12To24Format(sunset)}</span>
         </p>
-        <p className="font-light" >|</p>
       </div>
     </div>
   )

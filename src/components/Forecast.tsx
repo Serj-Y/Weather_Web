@@ -1,5 +1,6 @@
-import React from 'react'
-import { celsiusToFahrenheit } from "./celsiusToFahrenheit"
+import React from "react"
+import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
+
 
 
 type PropsType = {

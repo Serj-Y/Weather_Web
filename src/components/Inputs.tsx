@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { GoSearch, GoLocation } from "react-icons/go"
+import { toast } from "react-toastify"
 
 
 export default function Inputs({ setQuery, setFahrenheit }: any) {
@@ -7,7 +8,10 @@ export default function Inputs({ setQuery, setFahrenheit }: any) {
     const [city, setCity] = useState("")
 
     const handleSearchClick = () => {
-        if (city !== "") { setQuery(city) }
+        if (city !== "") {
+            setQuery(city)
+            setCity("")
+        }
     }
 
     const handleLocationClick = () => {
@@ -21,14 +25,23 @@ export default function Inputs({ setQuery, setFahrenheit }: any) {
             })
         }
     }
+
+    const handleCelsiusClick = () => {
+        setFahrenheit(false)
+        toast.info("Temperature units: Celsius ")
+    }
+
+    const handleFahrenheitClick = () => {
+        setFahrenheit(true)
+        toast.info("Temperature units: Fahrenheit ")
+    }
+
     return (
         <div className="flex flex-row justify-center my-6" >
             <div className="flex fle-row w-3/4 items-center justify-center space-x-4">
                 <input type="text"
                     value={city}
                     onChange={(e) => setCity(e.currentTarget.value)}
-                    name=""
-                    id=""
                     placeholder="Search for city..."
                     className="text-xl font-light p-2 focus:outline-none w-full shadow-xl capitalize placeholder:lowercase"
                 />
@@ -40,9 +53,9 @@ export default function Inputs({ setQuery, setFahrenheit }: any) {
                 />
             </div>
             <div className="flex flex-row w-1/4 items-center justify-center" >
-                <button onClick={() => setFahrenheit(false)} className="text-xl text-white font-light" >°C</button>
+                <button onClick={() => handleCelsiusClick()} className="text-xl text-white font-light cursor-pointer transition ease-out hover:scale-125" >°C</button>
                 <p className="text-xl text-white mx-1" >|</p>
-                <button onClick={() => setFahrenheit(true)} name="imperial" className="text-xl text-white font-light">°F</button>
+                <button onClick={() => handleFahrenheitClick()} name="imperial" className="text-xl text-white font-light cursor-pointer transition ease-out hover:scale-125">°F</button>
             </div>
         </div>
     )

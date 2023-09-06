@@ -1,6 +1,4 @@
-import { error } from "console";
-import { STATUS_CODES } from "http";
-import { DateTime } from "luxon"
+import { formatToLocalTime } from "../components/common/formatToLocalTime";
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"
@@ -25,25 +23,31 @@ const formatCurrentWeather = (data: any) => {
         const { maxtemp_c, mintemp_c } = forecastday[0].day
         const { sunrise, sunset } = forecastday[0].astro
 
-        return { lat, lon, name, temp_c, maxtemp_c, mintemp_c, wind_kph, humidity, feelslike_c, country, text, icon, localtime_epoch, tz_id, sunrise, sunset, }
+        return {
+            lat, lon, name,
+            temp_c, maxtemp_c, mintemp_c,
+            wind_kph, humidity, feelslike_c,
+            country, text, icon, localtime_epoch,
+            tz_id, sunrise, sunset,
+        }
     }
-
 }
+
 const formatForecastWeather = (data: any) => {
     if (data.forecast) {
-        let { tz_id, forecast, hour } = data;
+        let { tz_id, forecast } = data;
         forecast = forecast.forecastday.map((d: any) => {
             return {
                 title: formatToLocalTime(d.date_epoch, tz_id, "ccc"),
                 temp: d.day.maxtemp_c,
                 icon: d.day.condition.icon,
-                hour: d.hour
             }
         })
 
-        return { tz_id, forecast, hour }
+        return { tz_id, forecast }
     }
 }
+
 const formatHourWeather = (data: any) => {
     if (data.forecast) {
         let { tz_id, forecast, hoursFromTwoDays, location } = data
@@ -70,10 +74,6 @@ const getFormattedWeatherData = async (searchParams: any) => {
 
     return { ...formattedCurrentWeather, ...formattedForecastWeather, ...formattedHourWeather }
 }
-
-const formatToLocalTime = (secs: any, zone: any, format = "cccc, dd LLLL yyyy'| Local time: 'HH:mm") =>
-    DateTime.fromSeconds(secs).setZone(zone).toFormat(format)
-
 
 export default getFormattedWeatherData
 

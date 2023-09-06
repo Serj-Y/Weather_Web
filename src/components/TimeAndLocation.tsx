@@ -1,5 +1,5 @@
-import React from 'react'
-import { formatToLocalTime } from "../api/weatherApi"
+import React from "react"
+import { formatToLocalTime } from "./common/formatToLocalTime"
 
 type PropsType = {
     weather: {

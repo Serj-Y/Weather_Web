@@ -24,7 +24,7 @@ export default function TopButtons({setQuery}:any) {
   return (
     <div className="flex justify-between items-center my-6">
       {cites.map((city) => (
-        <button key={city.id} className="text-white text-lg font-medium"  onClick={()=> setQuery( city.title)} >{city.title}</button>
+        <button key={city.id} className="text-white text-lg font-medium cursor-pointer transition ease-out hover:scale-125"  onClick={()=> setQuery( city.title)} >{city.title}</button>
       ))}
     </div>
   )

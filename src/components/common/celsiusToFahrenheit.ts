@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 export const celsiusToFahrenheit = (celsius: number, isFahrenheit: boolean) => {
         if (isFahrenheit) {
