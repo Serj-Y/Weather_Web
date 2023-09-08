@@ -12,7 +12,6 @@ i18next
         resources: {
             en: {
                 translation: {
-                    test: "Not Found",
                     Realfeel: "Real feel:",
                     Humidity: "Humidity:",
                     Wind:"Wind:",
@@ -21,11 +20,16 @@ i18next
                     Max:"Max:",
                     Min:"Min:",
                     Set:"Set:",
+
+                    Hourly: "Hourly",
+                    Daily: "Daily",
+                    NotFound:"Not Found",
+                    CityNotFound: "City Not Found",
+                    Weatherfor: "Weather for",
                 }
             },
             ua: {
                 translation: {
-                    test: "не найдено",
                     Realfeel: "Відчувається як:",
                     Humidity: "Відносна вологість:",
                     Wind:"Пориви вітру:",
@@ -34,6 +38,12 @@ i18next
                     Max:"Макс:",
                     Min:"Мін:",
                     Set:"Захід:",
+
+                   Hourly: "Погодинний",
+                   Daily: "Поденный",
+                   NotFound:"Не знайдено",
+                   CityNotFound: "Місто не знайдено",
+                   Weatherfor: "Прогноз для ",
 
                 }
             },

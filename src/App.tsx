@@ -43,10 +43,10 @@ function App() {
         (data) => {
           setWeather(data)
           if (data.name) {
-            const message = data.name ? data.name : "Not found"
-            toast.success("Weather for " + message)
+            const message = data.name ? data.name : t("NotFound")
+            toast.success(t("Weatherfor") + message)
           } else {
-            toast.error("City Not Found")
+            toast.error(t("CityNotFound"))
           }
         }
       )
@@ -82,11 +82,9 @@ function App() {
       {weather?.fiveHourForecast ? <div>
         <TimeAndLocation weather={weather} />
         <TemperatureAndDetails isFahrenheit={isFahrenheit} weather={weather} />
-        <Forecast isFahrenheit={isFahrenheit} items={weather.fiveHourForecast} title="Hourly" />
-        <Forecast isFahrenheit={isFahrenheit} items={weather.forecast} title="Daily" />
-        {t("test")}
-        Not Found
-      </div> : <div className=" text-white text-3xl text-center font-medium">Not Found</div>}
+        <Forecast isFahrenheit={isFahrenheit} items={weather.fiveHourForecast} title={t("Hourly") }/>
+        <Forecast isFahrenheit={isFahrenheit} items={weather.forecast} title={t("Daily")} />
+      </div> : <div className=" text-white text-3xl text-center font-medium">{ t("CityNotFound")}</div>}
       <ToastContainer hideProgressBar transition={Slide} autoClose={1000} newestOnTop={true} theme={"colored"} />
     </div>
   );
