@@ -8,6 +8,7 @@
         "maxtemp",
         "mintemp",
         "tailwindcss",
+        "Toastify",
         "webfonts"
     ]
 }

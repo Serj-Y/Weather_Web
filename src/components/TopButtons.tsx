@@ -1,11 +1,12 @@
 import React from 'react'
 
-export default function TopButtons({setQuery}:any) {
+
+export default function TopButtons({setQuery}:any   ) {
 
   const cites = [
     {
       id: 1,
-      title: "Kiev"
+      title: "Kyiv"
     },
     {
       id: 2,

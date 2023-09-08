@@ -2,14 +2,16 @@ import React from "react"
 import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
 
 
-
 type PropsType = {
     title: string
-    items: any
     isFahrenheit: boolean
+    items: Array<{
+        title: string, icon: string, temp: number
+    }>
 }
 
 export default function Forecast({ title, items, isFahrenheit }: PropsType) {
+    console.log(items)
     return (
         <div>
             <div className="flex items-center justify-start mt-6" >
@@ -19,7 +21,7 @@ export default function Forecast({ title, items, isFahrenheit }: PropsType) {
             </div>
             <hr className="my-2" />
             <div className="flex flex-grow items-center justify-between text-white" >
-                {items.map((item: any) =>
+                {items.map((item: { title: string, icon: string, temp: number }) =>
                     <div key={item.title} className="flex flex-col items-center justify-center" >
                         <p className="font-light text-sm">
                             {item.title}

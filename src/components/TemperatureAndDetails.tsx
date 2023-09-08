@@ -23,7 +23,8 @@ type PropsType = {
 }
 
 export default function TemperatureAndDetails({ weather: {
-  icon, text, feelslike_c, temp_c, humidity, wind_kph, sunrise, sunset, maxtemp_c, mintemp_c
+  icon, text, feelslike_c, temp_c, humidity,
+  wind_kph, sunrise, sunset, maxtemp_c, mintemp_c
 }, isFahrenheit }: PropsType) {
 
   return (

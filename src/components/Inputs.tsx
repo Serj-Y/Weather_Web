@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { GoSearch, GoLocation } from "react-icons/go"
 import { toast } from "react-toastify"
 
 
-export default function Inputs({ setQuery, setFahrenheit }: any) {
+type PropsType = {
+    setFahrenheit: any
+    setQuery: (city: string) => void
+}
+
+export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
 
     const [city, setCity] = useState("")
 

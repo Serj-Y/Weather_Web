@@ -4,16 +4,38 @@ import Inputs from "./components/Inputs";
 import TimeAndLocation from "./components/TimeAndLocation";
 import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
-import getFormattedWeatherData from "./api/weatherApi";
+import getFormattedWeatherData, { DataType } from "./api/weatherApi";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-function App() {
-  const [query, setQuery] = useState("Kiev")
-  const [isFahrenheit, setFahrenheit] = useState(false)
-  const [weather, setWeather] = useState(null) as any
+type WeatherType = {
+  country: string
+  feelslike_c: 18.4
+  fiveHourForecast: any
+  forecast: {forecast:any}
+  humidity: number
+  icon: string
+  lat:number
+  localtime_epoch: number
+  lon: number 
+  maxtemp_c: number
+  mintemp_c: number
+  name: string
+  sunrise: string
+  sunset: string
+  temp_c: number
+  text: string
+  tz_id?: string
+  wind_kph:  number
 
+}
+
+function App() {
+  const [query, setQuery] = useState("Kyiv")
+  const [isFahrenheit, setFahrenheit] = useState(false)
+  const [weather, setWeather] = useState<WeatherType| any>(null) 
+  console.log(weather)
   useEffect(() => {
     const fetchWeather = async () => {
       await getFormattedWeatherData(query).then(
@@ -22,8 +44,8 @@ function App() {
           if (data.name) {
             const message = data.name ? data.name : "Not found"
             toast.success("Weather for " + message)
-          } else { 
-            toast.error("City Not Found") 
+          } else {
+            toast.error("City Not Found")
           }
         }
       )
@@ -31,8 +53,23 @@ function App() {
     fetchWeather()
   }, [query])
 
+  const changeBackGroundColor = () => {
+    const temp = weather?.temp_c
+    if (!weather) return "from-cyan-500 to-blue-500"
+    if (temp <= 15) return "from-cyan-600 to-blue-600"
+    if (temp >= 30) return "from-yellow-500 to-orange-500"
+    return "from-cyan-500 to-blue-500"
+  }
+
+  const changeGradientPosition = () => {
+    const time = weather?.fiveHourForecast[0].title;
+    if(time < "12:00" )  return "bg-gradient-to-br"
+    if(time> "16:00") return  "bg-gradient-to-bl"
+    return  "bg-gradient-to-b"
+  }
+
   return (
-    <div className=" mx-auto max-w-screen-md py-5 px-5 md:px-32 bg-gradient-to-b from-cyan-500 to-blue-500 h-fit shadow-xl shadow-gray-400">
+    <div className={`mx-auto max-w-screen-md py-5 px-5 md:px-32  ${changeGradientPosition()} ${changeBackGroundColor()} h-fit shadow-xl shadow-gray-400`}>
       <TopButtons setQuery={setQuery} />
       <Inputs setQuery={setQuery} setFahrenheit={setFahrenheit} />
       {weather?.fiveHourForecast ? <div>
