@@ -4,7 +4,7 @@ import Inputs from "./components/Inputs";
 import TimeAndLocation from "./components/TimeAndLocation";
 import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
-import getFormattedWeatherData, { DataType } from "./api/weatherApi";
+import getFormattedWeatherData from "./api/weatherApi";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -54,19 +54,26 @@ function App() {
   }, [query])
 
   const changeBackGroundColor = () => {
+
+    if(weather?.forecast){
     const temp = weather?.temp_c
     if (!weather) return "from-cyan-500 to-blue-500"
     if (temp <= 15) return "from-cyan-600 to-blue-600"
     if (temp >= 30) return "from-yellow-500 to-orange-500"
     return "from-cyan-500 to-blue-500"
   }
+  return "from-cyan-500 to-blue-500"
+}
 
   const changeGradientPosition = () => {
+    if(weather?.forecast){
     const time = weather?.fiveHourForecast[0].title;
     if(time < "12:00" )  return "bg-gradient-to-br"
     if(time> "16:00") return  "bg-gradient-to-bl"
     return  "bg-gradient-to-b"
-  }
+  }return  "bg-gradient-to-b"
+
+}
 
   return (
     <div className={`mx-auto max-w-screen-md py-5 px-5 md:px-32  ${changeGradientPosition()} ${changeBackGroundColor()} h-fit shadow-xl shadow-gray-400`}>

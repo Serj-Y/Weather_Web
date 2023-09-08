@@ -1,4 +1,5 @@
 import { formatToLocalTime } from "../components/common/formatToLocalTime";
+import { error } from "console";
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"
@@ -6,7 +7,7 @@ const BASE_URL = "http://api.weatherapi.com/v1/"
 //http://api.weatherapi.com/v1/current.json?key= 91bb73b14b5546859b4102417233108&q=Kiev&aqi=no
 // Call Current in city Kiev
 
-export type DataType = {
+ type DataType = {
     location: {
         lat: number,
         lon: number,
@@ -49,13 +50,25 @@ export type DataType = {
 
 const getWeatherData = (infoType: string, searchParams: string) => {
     const url = new URL(BASE_URL + infoType);
-    //@ts-ignore
-    url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY })
-    return fetch(url).then((response) => response.json()).catch((error) => alert(error))
+    
+    url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY }as any) as any
+    return fetch(url).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error(`Something went wrong on API server! ${response.statusText}`);
+      }
+    })
+    .then((response) => {
+        return response
+    })
+    .catch((error) => {
+        console.log(error)
+    });
 }
 
 const formatCurrentWeather = (data: DataType) => {
-    if (data.forecast) {
+    if (data) {
         const {
             location: { lat, lon, name, country, tz_id, localtime_epoch },
             current: { temp_c, wind_kph, humidity, feelslike_c, condition: { text, icon } },
@@ -63,7 +76,6 @@ const formatCurrentWeather = (data: DataType) => {
         } = data
         const { maxtemp_c, mintemp_c } = forecastday[0].day
         const { sunrise, sunset } = forecastday[0].astro
-
         return {
             lat, lon, name,
             temp_c, maxtemp_c, mintemp_c,
@@ -75,7 +87,7 @@ const formatCurrentWeather = (data: DataType) => {
 }
 
 const formatForecastWeather = (data: { tz_id: string, forecast: { forecastday: any } }) => {
-    if (data.forecast) {
+    if (data) {
         let { tz_id, forecast } = data;
         forecast = forecast.forecastday.map((d: { day: { maxtemp_c: number, condition: { icon: string } }, date_epoch: number }) => {
             return {
@@ -84,13 +96,12 @@ const formatForecastWeather = (data: { tz_id: string, forecast: { forecastday: a
                 icon: d.day.condition.icon,
             }
         })
-
         return { forecast }
     }
 }
 
 const formatHourWeather = (data: DataType) => {
-    if (data.forecast) {
+    if (data) {
         let { tz_id, forecast, hoursFromTwoDays, location } = data
         hoursFromTwoDays = forecast?.forecastday.slice(0, 2).map((d) => d.hour);
         const twoDaysHours = hoursFromTwoDays[0].concat(hoursFromTwoDays[1]);
@@ -113,7 +124,7 @@ const getFormattedWeatherData = async (searchParams: string) => {
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather)
     const formattedHourWeather = await getWeatherData("forecast.json", searchParams).then(formatHourWeather)
 
-    return { ...formattedCurrentWeather, ...formattedForecastWeather, ...formattedHourWeather }
+    return { ...formattedCurrentWeather, ...formattedHourWeather, ...formattedForecastWeather  }
 }
 
 export default getFormattedWeatherData
