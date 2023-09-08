@@ -4,7 +4,7 @@ import { FaTemperatureHalf } from "react-icons/fa6"
 import { WiHumidity } from "react-icons/wi"
 import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
 import { convertFrom12To24Format } from "./common/convertFrom12To24Format"
-
+import { useTranslation } from "react-i18next";
 
 type PropsType = {
   weather: {
@@ -26,7 +26,7 @@ export default function TemperatureAndDetails({ weather: {
   icon, text, feelslike_c, temp_c, humidity,
   wind_kph, sunrise, sunset, maxtemp_c, mintemp_c
 }, isFahrenheit }: PropsType) {
-
+  const { t } = useTranslation()
   return (
     <div>
       <div className="flex items-center justify-center py-6 text-xl text-cyan-400">
@@ -40,40 +40,40 @@ export default function TemperatureAndDetails({ weather: {
         <div className="flex flex-col space-y-2" >
           <div className="flex font-light text-sm items-center justify-center" >
             <FaTemperatureHalf size={18} className="mr-1" />
-            Real fell:
+            {t("Realfeel")}
             <span className="font-medium ml-1" >{celsiusToFahrenheit(feelslike_c, isFahrenheit)}°</span>
           </div>
           <div className="flex font-light text-sm items-center justify-center" >
             <WiHumidity size={18} className="mr-1" />
-            Humidity:
+            {t("Humidity")}
             <span className="font-medium ml-1" >{humidity}%</span>
           </div>
           <div className="flex font-light text-sm items-center justify-center" >
             <BsWind size={18} className="mr-1" />
-            Wind:
-            <span className="font-medium ml-1" >{wind_kph}km/h</span>
+       {t("Wind")}
+            <span className="font-medium ml-1" >{wind_kph}{t("WindStead")}</span>
           </div>
         </div>
       </div>
       <div className="flex flex-row items-center justify-center space-x-2 text-white text-sm py-2" >
         <BsSunrise size={18} />
         <p className="font-light" >
-          Rise: <span className="font-medium ml-1 " > {convertFrom12To24Format(sunrise)}</span>
+          {t("Rise")} <span className="font-medium ml-1 " > {convertFrom12To24Format(sunrise)}</span>
         </p>
         <p className="font-light" >|</p>
         <BsArrowUp size={18} />
         <p className="font-light" >
-          Max: <span className="font-medium ml-1 " > {celsiusToFahrenheit(maxtemp_c, isFahrenheit)}°</span>
+         {t("Max")} <span className="font-medium ml-1 " > {celsiusToFahrenheit(maxtemp_c, isFahrenheit)}°</span>
         </p>
         <p className="font-light" >|</p>
         <BsArrowDown size={18} />
         <p className="font-light" >
-          Min: <span className="font-medium ml-1 " >{celsiusToFahrenheit(mintemp_c, isFahrenheit)}°</span>
+         {t("Min")} <span className="font-medium ml-1 " >{celsiusToFahrenheit(mintemp_c, isFahrenheit)}°</span>
         </p>
         <p className="font-light" >|</p>
         <BsSunset size={18} />
         <p className="font-light" >
-          Set: <span className="font-medium ml-1 " > {convertFrom12To24Format(sunset)}</span>
+         {t("Set")} <span className="font-medium ml-1 " > {convertFrom12To24Format(sunset)}</span>
         </p>
       </div>
     </div>

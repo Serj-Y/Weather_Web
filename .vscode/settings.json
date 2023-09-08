@@ -3,6 +3,7 @@
         "extralight",
         "feelslike",
         "forecastday",
+        "languagedetector",
         "localtime",
         "luxon",
         "maxtemp",
