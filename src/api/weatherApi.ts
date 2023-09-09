@@ -2,8 +2,8 @@ import { formatToLocalTime } from "../components/common/formatToLocalTime";
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"
-const BASE_URL = "http://api.weatherapi.com/v1/"
-//http://api.weatherapi.com/v1/current.json?key= 91bb73b14b5546859b4102417233108&q=Kiev&aqi=no
+const BASE_URL = "https://api.weatherapi.com/v1/"
+//https://api.weatherapi.com/v1/current.json?key= 91bb73b14b5546859b4102417233108&q=Kiev&aqi=no
 // Call Current in city Kiev
 
 type DataType = {
