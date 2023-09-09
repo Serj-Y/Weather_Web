@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
+import { useTranslation } from "react-i18next"
 import { GoSearch, GoLocation } from "react-icons/go"
 import { toast } from "react-toastify"
 
@@ -9,7 +10,7 @@ type PropsType = {
 }
 
 export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
-
+    const { t } = useTranslation()
     const [city, setCity] = useState("")
 
     const handleSearchClick = () => {
@@ -33,21 +34,21 @@ export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
 
     const handleCelsiusClick = () => {
         setFahrenheit(false)
-        toast.info("Temperature units: Celsius ")
+        toast.info(t("TemperatureC"))
     }
 
     const handleFahrenheitClick = () => {
         setFahrenheit(true)
-        toast.info("Temperature units: Fahrenheit ")
+        toast.info(t("TemperatureF"))
     }
 
     return (
         <div className="flex flex-row justify-center my-6" >
-            <div className="flex fle-row w-3/4 items-center justify-center space-x-4">
+            <div className="flex w-3/4 items-center justify-center space-x-4">
                 <input type="text"
                     value={city}
                     onChange={(e) => setCity(e.currentTarget.value)}
-                    placeholder="Search for city..."
+                    placeholder={t("Searchcity")}
                     className="text-xl font-light p-2 focus:outline-none w-full shadow-xl capitalize placeholder:lowercase"
                 />
                 <GoSearch size={25}

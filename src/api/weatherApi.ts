@@ -1,5 +1,4 @@
 import { formatToLocalTime } from "../components/common/formatToLocalTime";
-import { error } from "console";
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"
@@ -7,7 +6,7 @@ const BASE_URL = "http://api.weatherapi.com/v1/"
 //http://api.weatherapi.com/v1/current.json?key= 91bb73b14b5546859b4102417233108&q=Kiev&aqi=no
 // Call Current in city Kiev
 
- type DataType = {
+type DataType = {
     location: {
         lat: number,
         lon: number,
@@ -50,21 +49,21 @@ const BASE_URL = "http://api.weatherapi.com/v1/"
 
 const getWeatherData = (infoType: string, searchParams: string) => {
     const url = new URL(BASE_URL + infoType);
-    
-    url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY }as any) as any
+
+    url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY } as any) as any
     return fetch(url).then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error(`Something went wrong on API server! ${response.statusText}`);
-      }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            throw new Error(`Something went wrong on API server! ${response.statusText}`);
+        }
     })
-    .then((response) => {
-        return response
-    })
-    .catch((error) => {
-        console.log(error)
-    });
+        .then((response) => {
+            return response
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
 
 const formatCurrentWeather = (data: DataType) => {
@@ -91,7 +90,7 @@ const formatForecastWeather = (data: { tz_id: string, forecast: { forecastday: a
         let { tz_id, forecast } = data;
         forecast = forecast.forecastday.map((d: { day: { maxtemp_c: number, condition: { icon: string } }, date_epoch: number }) => {
             return {
-                title: formatToLocalTime(d.date_epoch, tz_id, "ccc"),
+                title: formatToLocalTime(d.date_epoch, tz_id, "dd.MM "),
                 temp: d.day.maxtemp_c,
                 icon: d.day.condition.icon,
             }
@@ -124,7 +123,7 @@ const getFormattedWeatherData = async (searchParams: string) => {
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather)
     const formattedHourWeather = await getWeatherData("forecast.json", searchParams).then(formatHourWeather)
 
-    return { ...formattedCurrentWeather, ...formattedHourWeather, ...formattedForecastWeather  }
+    return { ...formattedCurrentWeather, ...formattedHourWeather, ...formattedForecastWeather }
 }
 
 export default getFormattedWeatherData

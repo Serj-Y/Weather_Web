@@ -1,5 +1,6 @@
 import React from "react"
 import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
+import { useTranslation } from "react-i18next"
 
 
 type PropsType = {
@@ -11,12 +12,12 @@ type PropsType = {
 }
 
 export default function Forecast({ title, items, isFahrenheit }: PropsType) {
-    console.log(items)
+    const {t}= useTranslation()
     return (
         <div>
             <div className="flex items-center justify-start mt-6" >
                 <p className="text-white font-medium uppercase" >
-                    {title} Forecast
+                    {title} {t("Forecast")}
                 </p>
             </div>
             <hr className="my-2" />
