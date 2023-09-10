@@ -1,5 +1,5 @@
 import React from "react"
-import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
+import { celsiusToFahrenheit } from "../helpers/celsiusToFahrenheit";
 import { useTranslation } from "react-i18next"
 
 
