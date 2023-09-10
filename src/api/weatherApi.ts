@@ -49,9 +49,9 @@ export type WeatherFetchDataType = {
 };
 
 // Singleton (Одиночка)
-// Builder (Строитель)
 let instance: WeatherApi | undefined;
 
+// Builder (Строитель)
 export class WeatherApi {
   private secretKey: string;
 
@@ -82,7 +82,7 @@ export class WeatherApi {
     });
   }
 
-  async fetch() {
+  public async fetch() {
     try {
       const res = await axios.post(BASE_URL, this.getUrlParams());
 

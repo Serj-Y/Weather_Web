@@ -46,6 +46,7 @@ function App() {
 
     new WeatherApi()
       .setCity(query)
+      .setHowDays(5)
       .fetch()
       .then((res) => {
         setWeather(res.data);
