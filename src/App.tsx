@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import { getBackgroundColor } from "./helpers/getBackgroundColor";
 import { getGradientPositionClass } from "./helpers/getGradientPositionClass";
 
+// Тип или тут или в weatherApi.ts - один должен быть
 export type WeatherType = {
   country: string;
   feelslike_c: 18.4;

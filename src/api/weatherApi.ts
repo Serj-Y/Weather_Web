@@ -7,6 +7,7 @@ const BASE_URL = "https://api.weatherapi.com/v1/forecast.json";
 const CITY_DEFAULT = "Kyiv";
 const DAYS_DEFAULT = "5";
 
+// Тип или тут или в APP - один должен быть
 export type WeatherFetchDataType = {
   location: {
     lat: number;
