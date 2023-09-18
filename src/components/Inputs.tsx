@@ -24,8 +24,8 @@ export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
     const handleLocationClick = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                let lat = position.coords.latitude.toString().slice(0, 6)
-                let lon = position.coords.longitude.toString().slice(0, 6)
+                const lat = position.coords.latitude.toString().slice(0, 6)
+                const lon = position.coords.longitude.toString().slice(0, 6)
                 const coordinate = `${lat},${lon}`
 
                 setQuery(coordinate)

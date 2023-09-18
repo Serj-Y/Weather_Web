@@ -1,4 +1,8 @@
-import { formatToLocalTime } from "../components/common/formatToLocalTime";
+<<<<<<< Updated upstream
+import { formatToLocalTime } from "../helpers/formatToLocalTime";
+=======
+import { formatToLocalTime } from "../components/helpers/formatToLocalTime";
+>>>>>>> Stashed changes
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"
@@ -17,7 +21,7 @@ type DataType = {
     },
     forecast: {
         forecastday: Array<{
-            hour: number;
+            hour: Array<{ temp_c: number, time_epoch: number, condition: { icon: string } }>;
             date_epoch: number;
             day: {
                 mintemp_c: number,
@@ -85,27 +89,27 @@ const formatCurrentWeather = (data: DataType) => {
     }
 }
 
-const formatForecastWeather = (data: { tz_id: string, forecast: { forecastday: any } }) => {
+const formatForecastWeather = (data: DataType) => {
     if (data) {
-        let { tz_id, forecast } = data;
-        forecast = forecast.forecastday.map((d: { day: { maxtemp_c: number, condition: { icon: string } }, date_epoch: number }) => {
+        const { tz_id, forecast } = data;
+        const dailyForecast = forecast?.forecastday.map((d) => {
             return {
                 title: formatToLocalTime(d.date_epoch, tz_id, "dd.MM "),
                 temp: d.day.maxtemp_c,
                 icon: d.day.condition.icon,
             }
         })
-        return { forecast }
+        return { dailyForecast }
     }
 }
 
 const formatHourWeather = (data: DataType) => {
     if (data) {
-        let { tz_id, forecast, hoursFromTwoDays, location } = data
-        hoursFromTwoDays = forecast?.forecastday.slice(0, 2).map((d) => d.hour);
+        const { tz_id, forecast, location } = data
+        const hoursFromTwoDays = forecast?.forecastday.slice(0, 2).map((d) => d.hour);
         const twoDaysHours = hoursFromTwoDays[0].concat(hoursFromTwoDays[1]);
-        const filtredTwoDaysHours = twoDaysHours.filter((f: { time_epoch: number; }) => f.time_epoch >= location.localtime_epoch)
-        const hourForecast = filtredTwoDaysHours.map((h: { time_epoch: number, temp_c: number, condition: { icon: string } }) => {
+        const filtredTwoDaysHours = twoDaysHours.filter((f) => f.time_epoch >= location.localtime_epoch)
+        const hourForecast = filtredTwoDaysHours.map((h) => {
             return {
                 title: formatToLocalTime(h.time_epoch, tz_id, "HH:mm"),
                 temp: h.temp_c,

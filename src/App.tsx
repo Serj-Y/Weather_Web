@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import TopButtons from "./components/TopButtons";
 import Inputs from "./components/Inputs";
-import TimeAndLocation from "./components/TimeAndLocation";
-import TemperatureAndDetails from "./components/TemperatureAndDetails";
+import TimeAndLocation from "./helpers/TimeAndLocation";
+import TemperatureAndDetails from "./helpers/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./api/weatherApi";
 import { Slide, ToastContainer, toast } from "react-toastify";
@@ -12,10 +12,11 @@ import Footer from "./components/Footer";
 
 
 type WeatherType = {
+
   country: string
-  feelslike_c: 18.4
+  feelslike_c: number
   fiveHourForecast: any
-  forecast: { forecast: any }
+  dailyForecast: any
   humidity: number
   icon: string
   lat: number
@@ -28,22 +29,26 @@ type WeatherType = {
   sunset: string
   temp_c: number
   text: string
-  tz_id?: string
+  tz_id: string
   wind_kph: number
-
 }
 
+
+
 function App() {
+
   const [query, setQuery] = useState("Kyiv")
   const [isFahrenheit, setFahrenheit] = useState(false)
-  const [weather, setWeather] = useState<WeatherType | any>(null)
+  const [weather, setWeather] = useState<null | WeatherType>(null)
   const { t } = useTranslation()
 
   useEffect(() => {
     const fetchWeather = async () => {
       await getFormattedWeatherData(query).then(
         (data) => {
+          //@ts-ignore
           setWeather(data)
+          console.log(data)
           if (data.name) {
             const message = data.name ? data.name : t("NotFound")
             toast.success(t("Weatherfor") + message)
@@ -57,7 +62,7 @@ function App() {
   }, [query])
 
   const changeBackGroundColor = () => {
-    if (weather?.forecast) {
+    if (weather?.dailyForecast) {
       const temp = weather?.temp_c
       if (!weather) return "from-cyan-500 to-blue-500"
       if (temp <= 15) return "from-cyan-600 to-blue-600"
@@ -68,7 +73,7 @@ function App() {
   }
 
   const changeGradientPosition = () => {
-    if (weather?.forecast) {
+    if (weather?.dailyForecast) {
       const time = weather?.fiveHourForecast[0].title;
       if (time < "12:00") return "bg-gradient-to-br"
       if (time > "16:00") return "bg-gradient-to-bl"
@@ -86,7 +91,7 @@ function App() {
           <TimeAndLocation weather={weather} />
           <TemperatureAndDetails isFahrenheit={isFahrenheit} weather={weather} />
           <Forecast isFahrenheit={isFahrenheit} items={weather.fiveHourForecast} title={t("Hourly")} />
-          <Forecast isFahrenheit={isFahrenheit} items={weather.forecast} title={t("Daily")} />
+          <Forecast isFahrenheit={isFahrenheit} items={weather.dailyForecast} title={t("Daily")} />
         </div> : <div className=" text-white text-3xl text-center font-medium">{t("CityNotFound")}</div>}
         <ToastContainer hideProgressBar transition={Slide} autoClose={1000} newestOnTop={true} theme={"colored"} />
         <Footer />

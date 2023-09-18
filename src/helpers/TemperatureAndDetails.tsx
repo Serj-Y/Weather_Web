@@ -2,8 +2,13 @@ import React from "react"
 import { BsArrowUp, BsArrowDown, BsWind, BsSunset, BsSunrise, } from "react-icons/bs"
 import { FaTemperatureHalf } from "react-icons/fa6"
 import { WiHumidity } from "react-icons/wi"
-import { celsiusToFahrenheit } from "./common/celsiusToFahrenheit"
-import { convertFrom12To24Format } from "./common/convertFrom12To24Format"
+<<<<<<< Updated upstream:src/helpers/TemperatureAndDetails.tsx
+import { celsiusToFahrenheit } from "./celsiusToFahrenheit"
+import { convertFrom12To24Format } from "./convertFrom12To24Format"
+=======
+import { celsiusToFahrenheit } from "./helpers/celsiusToFahrenheit"
+import { convertFrom12To24Format } from "./helpers/convertFrom12To24Format"
+>>>>>>> Stashed changes:src/components/TemperatureAndDetails.tsx
 import { useTranslation } from "react-i18next";
 
 type PropsType = {
