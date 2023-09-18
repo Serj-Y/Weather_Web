@@ -1,9 +1,8 @@
 import React from "react"
-<<<<<<< Updated upstream:src/helpers/TimeAndLocation.tsx
 import { formatToLocalTime } from "./formatToLocalTime"
-=======
-import { formatToLocalTime } from "./helpers/formatToLocalTime"
->>>>>>> Stashed changes:src/components/TimeAndLocation.tsx
+
+
+
 
 type PropsType = {
     weather: {

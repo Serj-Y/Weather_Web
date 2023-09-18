@@ -1,8 +1,6 @@
-<<<<<<< Updated upstream
 import { formatToLocalTime } from "../helpers/formatToLocalTime";
-=======
-import { formatToLocalTime } from "../components/helpers/formatToLocalTime";
->>>>>>> Stashed changes
+
+
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"

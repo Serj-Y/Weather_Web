@@ -1,9 +1,9 @@
 import React from "react"
-<<<<<<< Updated upstream
+
 import { celsiusToFahrenheit } from "../helpers/celsiusToFahrenheit"
-=======
-import { celsiusToFahrenheit } from "./helpers/celsiusToFahrenheit"
->>>>>>> Stashed changes
+
+
+
 import { useTranslation } from "react-i18next"
 
 
