@@ -12,7 +12,8 @@ type PropsType = {
 }
 
 export default function Forecast({ title, items, isFahrenheit }: PropsType) {
-    const {t}= useTranslation()
+    const { t } = useTranslation();
+
     return (
         <div>
             <div className="flex items-center justify-start mt-6" >

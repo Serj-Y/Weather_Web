@@ -55,8 +55,7 @@ export class WeatherFormated {
   }
 
   public hourWeather() {
-    let { tz_id, forecast, location } = this.weather;
-
+    let { forecast, location } = this.weather;
     const twoDaysHours = forecast.forecastday.flatMap((d) => d.hour);
 
     const filtredTwoDaysHours = twoDaysHours.filter(
@@ -66,11 +65,10 @@ export class WeatherFormated {
     const hourForecast = filtredTwoDaysHours
       .slice(0, 5)
       .map(({ time_epoch, temp_c, condition: { icon } }) => ({
-        title: formatToLocalTime(time_epoch, tz_id, "HH:mm"),
+        title: formatToLocalTime(time_epoch, location.tz_id, "HH:mm"),
         temp: temp_c,
         icon,
       }));
-
     return { fiveHourForecast: hourForecast };
   }
 }
