@@ -48,10 +48,11 @@ const formatCurrentWeather = (data: DataType) => {
 
 const formatForecastWeather = (data: DataType) => {
     if (data) {
-        const { tz_id, forecast } = data;
+        const {location, forecast } = data;
         const dailyForecast = forecast?.forecastday.map((d) => {
+            console.log(location.tz_id)
             return {
-                title: formatToLocalTime(d.date_epoch, tz_id, "dd.MM "),
+                title: formatToLocalTime(d.date_epoch, location.tz_id, "dd.MM "),
                 temp: d.day.maxtemp_c,
                 icon: d.day.condition.icon,
             }
