@@ -38,7 +38,7 @@ export type WeatherType = {
 function App() {
   const [query, setQuery] = useState<string>("Kyiv");
   const [isFahrenheit, setFahrenheit] = useState<boolean>(false);
-  const { isLoading, weather } = useWeather({ query });
+  const { isLoading, isError, weather } = useWeather({ query });
 
   const { t } = useTranslation();
 
@@ -66,7 +66,7 @@ function App() {
           </div>
         ) : (
           <>
-            {weather?.fiveHourForecast ? (
+            {!isError ? (
               <div>
                 <TimeAndLocation weather={weather} />
                 <TemperatureAndDetails
