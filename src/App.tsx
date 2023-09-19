@@ -1,16 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import TopButtons from "./components/TopButtons";
 import Inputs from "./components/Inputs";
 import TimeAndLocation from "./components/TimeAndLocation";
 import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
-import { WeatherApi } from "./api/weatherApi";
-import { Slide, ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import Footer from "./components/Footer";
 import { getBackgroundColor } from "./helpers/getBackgroundColor";
 import { getGradientPositionClass } from "./helpers/getGradientPositionClass";
+import { useWeather } from "./hooks/useWeather";
+import { Spinner } from "./components/Spinner";
 
 // Тип или тут или в weatherApi.ts - один должен быть
 export type WeatherType = {
@@ -35,29 +36,11 @@ export type WeatherType = {
 };
 
 function App() {
-  const [query, setQuery] = useState("Kyiv");
-  const [isFahrenheit, setFahrenheit] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [weather, setWeather] = useState<WeatherType | any>(null);
+  const [query, setQuery] = useState<string>("Kyiv");
+  const [isFahrenheit, setFahrenheit] = useState<boolean>(false);
+  const { isLoading, weather } = useWeather({ query });
+
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    new WeatherApi()
-      .setCity(query)
-      .setHowDays(5)
-      .fetch()
-      .then((res) => {
-        setWeather(res.data);
-      })
-      .catch((error) => {
-        toast.error(t(error.message));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [query, t]);
 
   const backGroundColorClass = useMemo(
     () => getBackgroundColor(weather),
@@ -78,7 +61,9 @@ function App() {
         <Inputs setQuery={setQuery} setFahrenheit={setFahrenheit} />
 
         {isLoading ? (
-          <div>Loading...</div>
+          <div className="flex justify-center py-10">
+            <Spinner />
+          </div>
         ) : (
           <>
             {weather?.fiveHourForecast ? (
