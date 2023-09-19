@@ -1,54 +1,29 @@
 import React, { useEffect, useState } from "react";
 import TopButtons from "./components/TopButtons";
 import Inputs from "./components/Inputs";
-import TimeAndLocation from "./helpers/TimeAndLocation";
-import TemperatureAndDetails from "./helpers/TemperatureAndDetails";
+import TimeAndLocation from "./components/TimeAndLocation";
+import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./api/weatherApi";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
 import Footer from "./components/Footer";
-
-
-type WeatherType = {
-
-  country: string
-  feelslike_c: number
-  fiveHourForecast: any
-  dailyForecast: any
-  humidity: number
-  icon: string
-  lat: number
-  localtime_epoch: number
-  lon: number
-  maxtemp_c: number
-  mintemp_c: number
-  name: string
-  sunrise: string
-  sunset: string
-  temp_c: number
-  text: string
-  tz_id: string
-  wind_kph: number
-}
-
+import { WeatherType } from "./type/WeatherType";
+import { convertFrom12To24Format } from "./helpers/convertFrom12To24Format";
 
 
 function App() {
-
   const [query, setQuery] = useState("Kyiv")
   const [isFahrenheit, setFahrenheit] = useState(false)
-  const [weather, setWeather] = useState<null | WeatherType>(null)
+  const [weather, setWeather] = useState<WeatherType | null>(null)
   const { t } = useTranslation()
 
   useEffect(() => {
     const fetchWeather = async () => {
       await getFormattedWeatherData(query).then(
         (data) => {
-          //@ts-ignore
           setWeather(data)
-          console.log(data)
           if (data.name) {
             const message = data.name ? data.name : t("NotFound")
             toast.success(t("Weatherfor") + message)
@@ -74,7 +49,7 @@ function App() {
 
   const changeGradientPosition = () => {
     if (weather?.dailyForecast) {
-      const time = weather?.fiveHourForecast[0].title;
+      const time = convertFrom12To24Format(weather?.fiveHourForecast[0].title, false)
       if (time < "12:00") return "bg-gradient-to-br"
       if (time > "16:00") return "bg-gradient-to-bl"
       return "bg-gradient-to-b"
@@ -88,7 +63,7 @@ function App() {
         <TopButtons setQuery={setQuery} />
         <Inputs setQuery={setQuery} setFahrenheit={setFahrenheit} />
         {weather?.fiveHourForecast ? <div>
-          <TimeAndLocation weather={weather} />
+          <TimeAndLocation isFahrenheit={isFahrenheit} weather={weather} />
           <TemperatureAndDetails isFahrenheit={isFahrenheit} weather={weather} />
           <Forecast isFahrenheit={isFahrenheit} items={weather.fiveHourForecast} title={t("Hourly")} />
           <Forecast isFahrenheit={isFahrenheit} items={weather.dailyForecast} title={t("Daily")} />

@@ -1,55 +1,14 @@
+import { WeatherType } from "../type/WeatherType";
 import { formatToLocalTime } from "../helpers/formatToLocalTime";
-
-
+import { DataType } from "../type/DataType";
+import { DateTime } from "luxon";
 
 
 const API_KEY = "91bb73b14b5546859b4102417233108"
 const BASE_URL = "https://api.weatherapi.com/v1/"
-//https://api.weatherapi.com/v1/current.json?key= 91bb73b14b5546859b4102417233108&q=Kiev&aqi=no
-// Call Current in city Kiev
 
-type DataType = {
-    location: {
-        lat: number,
-        lon: number,
-        name: string,
-        country: string,
-        tz_id: string,
-        localtime_epoch: number
-    },
-    forecast: {
-        forecastday: Array<{
-            hour: Array<{ temp_c: number, time_epoch: number, condition: { icon: string } }>;
-            date_epoch: number;
-            day: {
-                mintemp_c: number,
-                maxtemp_c: number,
-                condition: {
-                    icon: string
-                }
-            },
-            astro: {
-                sunrise: string,
-                sunset: string
-            }
-        }>,
 
-    },
-    current: {
-        temp_c: number,
-        wind_kph: number,
-        humidity: number,
-        feelslike_c: number,
-        condition: {
-            text: string,
-            icon: string
-        }
-    },
-    tz_id: string
-    hoursFromTwoDays: any
-}
-
-const getWeatherData = (infoType: string, searchParams: string) => {
+const getWeatherData = (infoType: any, searchParams: any) => {
     const url = new URL(BASE_URL + infoType);
 
     url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY } as any) as any
@@ -103,13 +62,14 @@ const formatForecastWeather = (data: DataType) => {
 
 const formatHourWeather = (data: DataType) => {
     if (data) {
-        const { tz_id, forecast, location } = data
+        const { forecast, location } = data
         const hoursFromTwoDays = forecast?.forecastday.slice(0, 2).map((d) => d.hour);
         const twoDaysHours = hoursFromTwoDays[0].concat(hoursFromTwoDays[1]);
         const filtredTwoDaysHours = twoDaysHours.filter((f) => f.time_epoch >= location.localtime_epoch)
         const hourForecast = filtredTwoDaysHours.map((h) => {
+            const time24 = h.time.slice(-5).toString()
             return {
-                title: formatToLocalTime(h.time_epoch, tz_id, "HH:mm"),
+                title: DateTime.fromFormat(time24, "HH:mm").toFormat("hh:mm a"),
                 temp: h.temp_c,
                 icon: h.condition.icon,
             }
@@ -121,13 +81,12 @@ const formatHourWeather = (data: DataType) => {
 }
 
 const getFormattedWeatherData = async (searchParams: string) => {
-    const formattedForecastWeather = await getWeatherData("forecast.json", searchParams).then(formatForecastWeather);
+    const formattedForecastWeather = await getWeatherData("forecast.json", searchParams).then(formatForecastWeather)
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather)
     const formattedHourWeather = await getWeatherData("forecast.json", searchParams).then(formatHourWeather)
 
-    return { ...formattedCurrentWeather, ...formattedHourWeather, ...formattedForecastWeather }
+    return { ...formattedCurrentWeather, ...formattedHourWeather, ...formattedForecastWeather } as unknown as WeatherType
 }
 
 export default getFormattedWeatherData
 
-export { formatToLocalTime }

@@ -1,8 +1,5 @@
 import React from "react"
-import { formatToLocalTime } from "./formatToLocalTime"
-
-
-
+import { formatToLocalTime } from "../helpers/formatToLocalTime"
 
 type PropsType = {
     weather: {
@@ -11,14 +8,15 @@ type PropsType = {
         name: string
         country: string
     }
+    isFahrenheit: boolean
 }
 
-export default function TimeAndLocation({ weather: { localtime_epoch, tz_id, name, country } }: PropsType) {
+export default function TimeAndLocation({ weather: { localtime_epoch, tz_id, name, country }, isFahrenheit }: PropsType) {
     return (
         <div>
             <div className="flex items-center justify-center my-6" >
                 <p className=" text-white text-xl font-extralight" >
-                    {localtime_epoch ? formatToLocalTime(localtime_epoch, tz_id) : <></>}
+                    {localtime_epoch ? formatToLocalTime(localtime_epoch, tz_id, undefined, isFahrenheit) : <></>}
                 </p>
             </div>
             <div className="flex items-center justify-center my-3" >

@@ -1,10 +1,7 @@
 import React from "react"
-
 import { celsiusToFahrenheit } from "../helpers/celsiusToFahrenheit"
-
-
-
 import { useTranslation } from "react-i18next"
+import { convertFrom12To24Format } from "../helpers/convertFrom12To24Format"
 
 
 type PropsType = {
@@ -16,7 +13,7 @@ type PropsType = {
 }
 
 export default function Forecast({ title, items, isFahrenheit }: PropsType) {
-    const {t}= useTranslation()
+    const { t } = useTranslation()
     return (
         <div>
             <div className="flex items-center justify-start mt-6" >
@@ -29,7 +26,7 @@ export default function Forecast({ title, items, isFahrenheit }: PropsType) {
                 {items.map((item: { title: string, icon: string, temp: number }) =>
                     <div key={item.title} className="flex flex-col items-center justify-center" >
                         <p className="font-light text-sm">
-                            {item.title}
+                            {item.title.length > 6 ? convertFrom12To24Format(item.title, isFahrenheit) : item.title}
                         </p>
                         <img className="w-12 my-2" src={item.icon} alt="forecastImg" />
                         <p className="font-medium" >{celsiusToFahrenheit(item.temp, isFahrenheit)}°</p>
