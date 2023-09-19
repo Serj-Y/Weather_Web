@@ -1,4 +1,4 @@
-export const getGradientPositionClass = (weather: any) => {
+export const getGradientPositionClass = (weather: any): string => {
   if (weather?.forecast) {
     const time = weather?.fiveHourForecast[0].title;
     if (time < "12:00") return "bg-gradient-to-br";

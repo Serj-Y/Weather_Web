@@ -1,6 +1,6 @@
 // import { WeatherType } from "../App";
 
-export const getBackgroundColor = (weather: any) => {
+export const getBackgroundColor = (weather: any): string => {
   if (weather?.forecast) {
     const { temp } = weather.temp_c;
     if (!weather) return "from-cyan-500 to-blue-500";

@@ -7,6 +7,14 @@ const BASE_URL = "https://api.weatherapi.com/v1/forecast.json";
 const CITY_DEFAULT = "Kyiv";
 const DAYS_DEFAULT = "5";
 
+export interface HourType {
+  time_epoch: number;
+  temp_c: number;
+  condition: {
+    icon: string;
+  };
+}
+
 // Тип или тут или в APP - один должен быть
 export type WeatherFetchDataType = {
   location: {
@@ -19,7 +27,7 @@ export type WeatherFetchDataType = {
   };
   forecast: {
     forecastday: Array<{
-      hour: number;
+      hour: HourType[];
       date_epoch: number;
       day: {
         mintemp_c: number;
@@ -74,7 +82,7 @@ export class WeatherApi {
     return this;
   }
 
-  private getUrlParams() {
+  private getUrlParams(): URLSearchParams {
     return new URLSearchParams({
       q: this.city,
       days: this.howDays,

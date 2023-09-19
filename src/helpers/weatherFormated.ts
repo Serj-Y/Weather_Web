@@ -1,14 +1,6 @@
 import { WeatherFetchDataType } from "../api/weatherApi";
 import { formatToLocalTime } from "./../helpers/formatToLocalTime";
 
-interface Hour {
-  time_epoch: number;
-  temp_c: number;
-  condition: {
-    icon: string;
-  };
-}
-
 export class WeatherFormated {
   private weather: WeatherFetchDataType;
 
@@ -63,24 +55,22 @@ export class WeatherFormated {
   }
 
   public hourWeather() {
-    // Запрещено мутировать данные которые пришли (принцеп чистой функции)
-    // -> hoursFromTwoDays
+    let { tz_id, forecast, location } = this.weather;
 
-    let { tz_id, forecast, hoursFromTwoDays, location } = this.weather;
-    hoursFromTwoDays = forecast?.forecastday.slice(0, 2).map((d) => d.hour);
-    const twoDaysHours = hoursFromTwoDays[0].concat(hoursFromTwoDays[1]);
+    const twoDaysHours = forecast.forecastday.flatMap((d) => d.hour);
+
     const filtredTwoDaysHours = twoDaysHours.filter(
-      (f: Hour) => f.time_epoch >= location.localtime_epoch
+      (f) => f.time_epoch >= location.localtime_epoch
     );
-    const hourForecast = filtredTwoDaysHours.map((h: Hour) => {
-      return {
-        title: formatToLocalTime(h.time_epoch, tz_id, "HH:mm"),
-        temp: h.temp_c,
-        icon: h.condition.icon,
-      };
-    });
-    const fiveHourForecast = hourForecast.slice(0, 5);
 
-    return { fiveHourForecast };
+    const hourForecast = filtredTwoDaysHours
+      .slice(0, 5)
+      .map(({ time_epoch, temp_c, condition: { icon } }) => ({
+        title: formatToLocalTime(time_epoch, tz_id, "HH:mm"),
+        temp: temp_c,
+        icon,
+      }));
+
+    return { fiveHourForecast: hourForecast };
   }
 }
