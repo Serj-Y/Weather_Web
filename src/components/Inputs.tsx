@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 
 type PropsType = {
     setFahrenheit: any
-    setQuery: (city: string) => void
+    setQuery: (city: any) => void
 }
 
 export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
@@ -16,7 +16,7 @@ export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
 
     const handleSearchClick = () => {
         if (city !== "") {
-            setQuery(city)
+            setQuery({q:city})
             setCity("")
         }
     }
@@ -28,7 +28,7 @@ export default function Inputs({ setQuery, setFahrenheit }: PropsType) {
                 const lon = position.coords.longitude.toString().slice(0, 6)
                 const coordinate = `${lat},${lon}`
 
-                setQuery(coordinate)
+                setQuery({lat:lat ,lon:lon})
             })
         }
     }

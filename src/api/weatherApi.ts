@@ -11,7 +11,7 @@ const BASE_URL = "https://api.weatherapi.com/v1/"
 const getWeatherData = (infoType: any, searchParams: any) => {
     const url = new URL(BASE_URL + infoType);
 
-    url.search = new URLSearchParams({ q: searchParams, days: 5, key: API_KEY } as any) as any
+    url.search = new URLSearchParams({ ...searchParams, days: 5, key: API_KEY } as any) as any
     return fetch(url).then((response) => {
         if (response.status === 200) {
             return response.json();
@@ -48,9 +48,8 @@ const formatCurrentWeather = (data: DataType) => {
 
 const formatForecastWeather = (data: DataType) => {
     if (data) {
-        const {location, forecast } = data;
+        const { location, forecast } = data;
         const dailyForecast = forecast?.forecastday.map((d) => {
-            console.log(location.tz_id)
             return {
                 title: formatToLocalTime(d.date_epoch, location.tz_id, "dd.MM "),
                 temp: d.day.maxtemp_c,
@@ -88,6 +87,5 @@ const getFormattedWeatherData = async (searchParams: string) => {
 
     return { ...formattedCurrentWeather, ...formattedHourWeather, ...formattedForecastWeather } as unknown as WeatherType
 }
-
 export default getFormattedWeatherData
 

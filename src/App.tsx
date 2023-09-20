@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import Footer from "./components/Footer";
 import { WeatherType } from "./type/WeatherType";
 import { convertFrom12To24Format } from "./helpers/convertFrom12To24Format";
-
+import getData from "./api/weatherApiV2"
 
 function App() {
   const [query, setQuery] = useState("Kyiv")
@@ -34,6 +34,20 @@ function App() {
       )
     }
     fetchWeather()
+  }, [query])
+
+
+
+
+  useEffect(() => {
+    const fechWeather = async () => {
+      await getData(query).then(
+        (data) => {
+        console.log(data.data)
+        }
+      )
+    }
+    fechWeather()
   }, [query])
 
   const changeBackGroundColor = () => {
