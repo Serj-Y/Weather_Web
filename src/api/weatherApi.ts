@@ -80,7 +80,7 @@ const formatHourWeather = (data: DataType) => {
     }
 }
 
-const getFormattedWeatherData = async (searchParams: string) => {
+const getFormattedWeatherData = async (searchParams: any) => {
     const formattedForecastWeather = await getWeatherData("forecast.json", searchParams).then(formatForecastWeather)
     const formattedCurrentWeather = await getWeatherData("forecast.json", searchParams).then(formatCurrentWeather)
     const formattedHourWeather = await getWeatherData("forecast.json", searchParams).then(formatHourWeather)

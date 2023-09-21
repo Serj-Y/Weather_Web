@@ -11,13 +11,15 @@ import { useTranslation } from "react-i18next";
 import Footer from "./components/Footer";
 import { WeatherType } from "./type/WeatherType";
 import { convertFrom12To24Format } from "./helpers/convertFrom12To24Format";
-import getData from "./api/weatherApiV2"
+import { useWeather } from "./hook/useWeather";
 
 function App() {
-  const [query, setQuery] = useState("Kyiv")
+  const [query, setQuery] = useState({ q: "Kyiv" })
   const [isFahrenheit, setFahrenheit] = useState(false)
   const [weather, setWeather] = useState<WeatherType | null>(null)
   const { t } = useTranslation()
+  const { isLoading, isError, weatherV2 } = useWeather(query);
+  const [test, setTest] = useState(null)
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -35,20 +37,8 @@ function App() {
     }
     fetchWeather()
   }, [query])
+  console.log(weatherV2, "in App")
 
-
-
-
-  useEffect(() => {
-    const fechWeather = async () => {
-      await getData(query).then(
-        (data) => {
-        console.log(data.data)
-        }
-      )
-    }
-    fechWeather()
-  }, [query])
 
   const changeBackGroundColor = () => {
     if (weather?.dailyForecast) {
