@@ -18,8 +18,7 @@ function App() {
   const [isFahrenheit, setFahrenheit] = useState(false)
   const [weather, setWeather] = useState<WeatherType | null>(null)
   const { t } = useTranslation()
-  const { isLoading, isError, weatherV2 } = useWeather(query);
-  const [test, setTest] = useState(null)
+  const { isLoading, isError, weatherV2 } = useWeather(query, isFahrenheit);
 
   useEffect(() => {
     const fetchWeather = async () => {
