@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useMemo, useState } from "react";
 import TopButtons from "./components/TopButtons";
 import Inputs from "./components/Inputs";
 import TimeAndLocation from "./components/TimeAndLocation";
@@ -17,7 +17,7 @@ function App() {
   const { isLoading, weather } = useWeather(query);
   const { t } = useTranslation();
 
-  const changeBackGroundColor = () => {
+  const changeBackGroundColor = useMemo(() => {
     if (weather?.dailyForecast) {
       const temp = weather?.temp_c;
       if (!weather) return "from-cyan-500 to-blue-500";
@@ -26,9 +26,9 @@ function App() {
       return "from-cyan-500 to-blue-500";
     }
     return "from-cyan-500 to-blue-500";
-  };
+  }, [weather]);
 
-  const changeGradientPosition = () => {
+  const changeGradientPosition = useMemo(() => {
     if (weather?.dailyForecast) {
       const time = convertFrom12To24Format(
         weather?.fiveHourForecast[0].title,
@@ -39,11 +39,11 @@ function App() {
       return "bg-gradient-to-b";
     }
     return "bg-gradient-to-b";
-  };
+  }, [weather?.dailyForecast, weather?.fiveHourForecast]);
 
   return (
     <div
-      className={`mx-auto w-screen  py-5 px-5 md:px-32  ${changeGradientPosition()} ${changeBackGroundColor()} min-h-screen`}
+      className={`mx-auto w-screen  py-5 px-5 md:px-32  ${changeGradientPosition} ${changeBackGroundColor} min-h-screen`}
     >
       <div className="mx-auto max-w-screen-md py-5 px-5 md:px-32 h-fit shadow-2xl backdrop-blur-3xl">
         <TopButtons setQuery={setQuery} />
