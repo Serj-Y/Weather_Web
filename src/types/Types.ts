@@ -1,5 +1,5 @@
 export type WeatherForecastHourType = {
-  time: any;
+  time: Date;
   temp_c: number;
   time_epoch: number;
   condition: { icon: string };

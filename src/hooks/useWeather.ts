@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { WeatherApi } from "../services/api/weatherApi";
+import { WeatherType } from "../utils/weatherFormattedData";
 
 export const useWeather = (query: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const [weather, setWeather] = useState<any>(null);
+  const [weather, setWeather] = useState<WeatherType>();
   const { t, i18n: {language} } = useTranslation();
 
   useEffect(() => {

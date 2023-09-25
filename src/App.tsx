@@ -48,7 +48,7 @@ function App() {
       <div className="mx-auto max-w-screen-md py-5 px-5 md:px-32 h-fit shadow-2xl backdrop-blur-3xl">
         <TopButtons setQuery={setQuery} />
         <Inputs setQuery={setQuery} setFahrenheit={setFahrenheit} />
-        {!isLoading ? (
+        {!isLoading && weather !== undefined ? (
           <div>
             <TimeAndLocation isFahrenheit={isFahrenheit} weather={weather} />
             <TemperatureAndDetails

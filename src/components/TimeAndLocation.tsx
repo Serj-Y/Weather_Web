@@ -1,20 +1,14 @@
-import React from "react";
 import { formatToLocalTime } from "../utils/helpers";
+import { WeatherType } from "../utils/weatherFormattedData";
 
-type PropsType = {
-  weather: {
-    localtime_epoch: number;
-    tz_id: string;
-    name: string;
-    country: string;
-  };
+export type TimeAndLocationPropsType = {
+  weather: WeatherType;
   isFahrenheit: boolean;
 };
 
-export default function TimeAndLocation({
-  weather: { localtime_epoch, tz_id, name, country },
-  isFahrenheit,
-}: PropsType) {
+export default function TimeAndLocation({ isFahrenheit, ...props }: TimeAndLocationPropsType) {
+  const { name, country, localtime_epoch, tz_id } = props.weather;
+
   return (
     <div>
       <div className="flex items-center justify-center my-6">

@@ -1,6 +1,45 @@
 import { WeatherDataType } from "../types/Types";
 import { formatToLocalTime } from "./helpers";
 
+export type WeatherType = CurrentWeatherType &
+  DailyForecastType &
+  FiveHourForecastType; 
+
+export type CurrentWeatherType = {
+  lat: number;
+  lon: number;
+  name: string;
+  temp_c: number;
+  maxtemp_c: number;
+  mintemp_c: number;
+  wind_kph: number;
+  humidity: number;
+  feelslike_c: number;
+  country: string;
+  text: string;
+  icon: string;
+  localtime_epoch: number;
+  tz_id: string;
+  sunrise: string;
+  sunset: string;
+};
+
+export type DailyForecastType = {
+  dailyForecast: {
+    title: string;
+    temp: number;
+    icon: string;
+  }[];
+};
+
+export type FiveHourForecastType = {
+  fiveHourForecast: {
+    title: string;
+    temp: number;
+    icon: string;
+  }[];
+};
+
 export class WeatherFormattedData {
   private weather: WeatherDataType;
 
@@ -8,7 +47,7 @@ export class WeatherFormattedData {
     this.weather = weather;
   }
 
-  public currentWeather() {
+  public currentWeather(): CurrentWeatherType {
     const { lat, lon, name, country, tz_id, localtime_epoch } =
       this.weather.location;
     const {
@@ -41,7 +80,7 @@ export class WeatherFormattedData {
     };
   }
 
-  public forecastWeather() {
+  public forecastWeather(): DailyForecastType {
     let { tz_id, forecast } = this.weather;
     const formatted = forecast.forecastday.map((d) => {
       return {
@@ -52,7 +91,7 @@ export class WeatherFormattedData {
     });
     return { dailyForecast: formatted };
   }
-  public hourWeather() {
+  public hourWeather(): FiveHourForecastType {
     let { forecast, location } = this.weather;
     const twoDaysHours = forecast.forecastday.flatMap((d) => d.hour);
 
