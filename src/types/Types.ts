@@ -1,3 +1,26 @@
+export type WeatherForecastHourType = {
+  time: any;
+  temp_c: number;
+  time_epoch: number;
+  condition: { icon: string };
+};
+
+export type WeatherForecastDayType = {
+  hour: Array<WeatherForecastHourType>;
+  date_epoch: number;
+  day: {
+    mintemp_c: number;
+    maxtemp_c: number;
+    condition: {
+      icon: string;
+    };
+  };
+  astro: {
+    sunrise: string;
+    sunset: string;
+  };
+};
+
 export type WeatherDataType = {
   location: {
     lat: number;
@@ -8,26 +31,7 @@ export type WeatherDataType = {
     localtime_epoch: number;
   };
   forecast: {
-    forecastday: Array<{
-      hour: Array<{
-        time: any;
-        temp_c: number;
-        time_epoch: number;
-        condition: { icon: string };
-      }>;
-      date_epoch: number;
-      day: {
-        mintemp_c: number;
-        maxtemp_c: number;
-        condition: {
-          icon: string;
-        };
-      };
-      astro: {
-        sunrise: string;
-        sunset: string;
-      };
-    }>;
+    forecastday: Array<WeatherForecastDayType>;
   };
   current: {
     temp_c: number;
@@ -40,5 +44,5 @@ export type WeatherDataType = {
     };
   };
   tz_id: string;
-  isFahrenheit: boolean
+  isFahrenheit: boolean;
 };
