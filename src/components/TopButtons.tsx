@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function TopButtons( {setQuery}: any ) {
+type TopButtonType = {
+  setQuery: (value: string) => void;
+};
+
+export default function TopButtons({ setQuery }: TopButtonType) {
   const cites = [
     {
       id: 1,

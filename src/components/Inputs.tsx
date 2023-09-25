@@ -4,7 +4,7 @@ import { GoSearch, GoLocation } from "react-icons/go";
 import { toast } from "react-toastify";
 
 type PropsType = {
-  setFahrenheit: any;
+  setFahrenheit: (value: boolean) => void
   setQuery: (city: string) => void;
 };
 
