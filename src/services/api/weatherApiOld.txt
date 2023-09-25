@@ -1,6 +1,6 @@
-import { WeatherType } from "../type/WeatherType";
-import { formatToLocalTime } from "../helpers/formatToLocalTime";
-import { DataType } from "../type/DataType";
+import { WeatherType } from "../../types/WeatherType";
+import { formatToLocalTime } from "../../utils/formatToLocalTime";
+import { DataType } from "../../types/DataType";
 import { DateTime } from "luxon";
 
 
@@ -8,10 +8,10 @@ const API_KEY = "91bb73b14b5546859b4102417233108"
 const BASE_URL = "https://api.weatherapi.com/v1/"
 
 
-const getWeatherData = (infoType: any, searchParams: any) => {
+const getWeatherData = (infoType: any, searchParams: string) => {
     const url = new URL(BASE_URL + infoType);
 
-    url.search = new URLSearchParams({ ...searchParams, days: 5, key: API_KEY } as any) as any
+    url.search = new URLSearchParams({ q:searchParams, days: 5, key: API_KEY } as any) as any
     return fetch(url).then((response) => {
         if (response.status === 200) {
             return response.json();

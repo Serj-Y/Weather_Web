@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { WeatherApiV2 } from "../api/weatherApiV2";
+import { WeatherApi } from "../services/api/weatherApi";
 
-export const useWeather = (query: any, isFahrenheit: boolean) => {
+export const useWeather = (query: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const [weatherV2, setWeatherV2] = useState<any>(null);
+  const [weather, setWeather] = useState<any>(null);
   const { t, i18n } = useTranslation();
 
-  const lang = i18n.language
+  const lang = i18n.language;
 
   useEffect(() => {
     setIsLoading(true);
-    new WeatherApiV2()
+    new WeatherApi()
       .setLang(lang)
       .setCity(query)
-      .setUnits(isFahrenheit ? "imperial" : "metric")
       .fetch()
       .then((res) => {
-        setWeatherV2(res.data);
+        setWeather(res.data);
       })
       .catch((error) => {
         toast.error(t(error.message));
@@ -28,7 +27,7 @@ export const useWeather = (query: any, isFahrenheit: boolean) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [query, isFahrenheit, lang]);
+  }, [query,lang]);
 
-  return { isLoading, isError, weatherV2 }
+  return { isLoading, isError, weather };
 };
