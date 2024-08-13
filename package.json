@@ -1,6 +1,6 @@
 {
   "name": "weather-app",
-  "homepage": "https://serj-y.github.io/Weather_App/",
+  "homepage": "https://serj-y.github.io/Weather_Web/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
