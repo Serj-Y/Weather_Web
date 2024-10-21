@@ -1,8 +1,8 @@
 import axios from "axios";
 import { WeatherFormattedData } from "../../utils/weatherFormattedData";
 
-const API_KEY = "91bb73b14b5546859b4102417233108";
-const BASE_URL = "https://api.weatherapi.com/v1/forecast.json?";
+const API_KEY = process.env.REACT_APP_API_KEY!
+const BASE_URL = "https://api.weatherapi.com/v1/forecast.json?"
 const CITY_DEFAULT = "Kyiv";
 const LANG_DEFAULT = "en";
 
